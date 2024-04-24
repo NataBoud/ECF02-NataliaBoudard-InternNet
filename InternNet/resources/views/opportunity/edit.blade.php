@@ -8,30 +8,54 @@
 
         <div class="flex justify-center p-6">
             <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
-                <div class="form">
-                    <form action="{{ route('opportunities.update', $opportunity->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label for="title">Titre:</label>
-                            <input class="form-control" type="text" name="title" id="title" value="{{ $opportunity->title }}" required>
-                        </div>
+                <form action="{{ route('opportunities.update', $opportunity->id) }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
 
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea class="form-control" name="description" id="description" rows="5" required>{{ $opportunity->description }}</textarea>
-                        </div>
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mt-4">Titre de l'offre</label>
+                        <input id="title" type="text" name="title" class="mt-1 p-2 w-full border rounded-md" value="{{ $opportunity->title }}" required>
+                    </div>
 
-                        <div class="button-group">
-                            <button type="submit" id="form-button">Mettre à jour</button>
-                            <a href="{{ route('opportunities.show', $opportunity->id) }}">
-                                <button type="button" id="btn-cancel">Annuler</button>
-                            </a>
-                        </div>
-                    </form>
+                    <div>
+                        <label for="typeContract" class="block text-sm font-medium text-gray-700 mt-4">Type de contrat</label>
+                        <select id="typeContract" name="typeContract" class="mt-1 p-2 w-full border rounded-md">
+                            <option value="" disabled>Choisir le type de contrat</option>
+                            <option value="CDD" {{ $opportunity->typeContract == 'CDD' ? 'selected' : '' }}>CDD</option>
+                            <option value="CDI" {{ $opportunity->typeContract == 'CDI' ? 'selected' : '' }}>CDI</option>
+                            <option value="Stage" {{ $opportunity->typeContract == 'Stage' ? 'selected' : '' }}>Stage</option>
+                            <option value="Alternance" {{ $opportunity->typeContract == 'Alternance' ? 'selected' : '' }}>Alternance</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="start" class="block text-sm font-medium text-gray-700 mt-4">Début</label>
+                        <input id="start" type="date" name="start" class="mt-1 p-2 w-full border rounded-md" value="{{ $opportunity->start }}" required>
+                    </div>
+
+                    <div>
+                        <label for="end" class="block text-sm font-medium text-gray-700 mt-4">Fin</label>
+                        <input id="end" type="date" name="end" class="mt-1 p-2 w-full border rounded-md" value="{{ $opportunity->end }}">
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mt-4">Description</label>
+                        <textarea id="description" name="description" class="mt-1 p-2 w-full border rounded-md h-32" required>{{ $opportunity->description }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <x-primary-button type="submit"  class="mr-2">
+                            {{ __('Mettre à jour') }}
+                        </x-primary-button>
+                        <a href="{{ route('opportunities.show', $opportunity->id) }}">
+                            <x-secondary-button>
+                                {{ __('Annuler') }}
+                            </x-secondary-button>
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-
 
     </main>
 </x-app-layout>

@@ -58,6 +58,13 @@ class OpportunityController extends Controller
     }
 
     // UPDATE ARTICLE PAR ID
+
+    public function edit($id): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $opportunity = Opportunity::findOrFail($id);
+        return view('opportunity.edit')->with('opportunity', $opportunity);
+    }
+
     public function update(Request $request, $id): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $request->validate([
@@ -68,18 +75,14 @@ class OpportunityController extends Controller
             'description' => 'required|string'
         ]);
 
-        $opportunity = Opportunity::find($id);
+        $opportunity = Opportunity::findOrFail($id);
         $opportunity->update($request->all());
 
-        return redirect('/opportunity/' . $id)
+        return redirect()
+            ->route('opportunities.show', $opportunity->id)
             ->with('success', 'Opportunité mis à jour avec succès');
     }
 
-    public function edit($id): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $article = Opportunity::find($id);
-        return view('opportunity.edit')->with('article', $article);
-    }
 
 
     public function destroy($id): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
