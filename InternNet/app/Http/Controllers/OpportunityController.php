@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOpportunityRequest;
 use App\Models\Opportunity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -10,30 +11,33 @@ use Illuminate\Support\Facades\Auth;
 class OpportunityController extends Controller
 {
 
+    public function index(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $opportunities = Opportunity::all();
+//        dd($opportunities);
+        return view('welcome', compact('opportunities'));
+    }
+
+
     public function create(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('opportunity.create');
     }
 
     // CREATE
-    public function store(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    public function store(StoreOpportunityRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|min:2|max:255',
-            'typeContract' => 'required|string|min:2|max:255',
-            'start' => 'required|date',
-            'end' => 'nullable|date',
-            'description' => 'required|string'
-        ]);
-
+        $validated = $request->validated();
+//        Opportunity::create([
+//            ...$validated,
+//            'user_id' => auth()->id(),
+//            'company_id' => auth()->user()->company->id,
+//        ]);
         $opportunity = new Opportunity([
-            'title' => $validated['title'],
-            'typeContract' => $validated['typeContract'],
-            'description' => $validated['description'],
-            'start' => $validated['start'],
-            'end' => $validated['end'],
-            'company' => Auth::user()->name,
+            ...$validated,
             'user_id' => Auth::id(),
+            'company_id' => Auth::user()->company->id,
+//            'company_id' => auth()->user()->company->id
         ]);
 
         $opportunity->save();
@@ -43,18 +47,12 @@ class OpportunityController extends Controller
             ->with('success', 'Opportunité créée avec succès!');
     }
 
-    public function index(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $opportunities = Opportunity::all();
-//        dd($opportunities);
-        return view('welcome', ['opportunities' => $opportunities]);
-    }
-
 
     public function show($id): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $opportunity = Opportunity::findOrFail($id);
-        return view('opportunity.show', ['opportunity' => $opportunity]);
+//      return view('opportunity.show', ['opportunity' => $opportunity]);
+        return view('opportunity.show', compact('opportunity'));
     }
 
     // UPDATE ARTICLE PAR ID

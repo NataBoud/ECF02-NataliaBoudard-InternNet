@@ -13,10 +13,24 @@ class Opportunity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'typeContract', 'company', 'start', 'end', 'description', 'user_id'];
+    protected $fillable = [
+        'title',
+        'typeContract',
+        'start',
+        'end',
+        'email',
+        'description',
+        'company_id',
+        'user_id'
+    ];
 
     public static function create(array $opportunityData)
     {
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 
     public function user(): BelongsTo
