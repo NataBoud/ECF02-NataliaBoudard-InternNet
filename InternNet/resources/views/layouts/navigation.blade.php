@@ -12,9 +12,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')" class="text-indigo-900 text-xl">
+                    <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')" class="text-indigo-900 text-xl font-black">
 
-                            {{ __('InterNet') }}
+                            {{ __('InternNet') }}
 
                     </x-nav-link>
 
@@ -29,6 +29,12 @@
                         @auth
                             {{ __('Publier une offre') }}
                         @endauth
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('opportunities.offers')" :active="request()->routeIs('opportunities.offers')">
+                            @auth
+                                {{ __('Mes offres') }}
+                            @endauth
                         </x-nav-link>
 
                         @guest

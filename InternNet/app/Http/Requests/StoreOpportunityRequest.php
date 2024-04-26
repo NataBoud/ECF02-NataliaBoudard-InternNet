@@ -25,8 +25,8 @@ class StoreOpportunityRequest extends FormRequest
             'title' => 'required|string|max:150',
             'typeContract' => 'required|string|min:2|max:255',
             'description' => 'required|string',
-            'start' => 'required|date|before:end',
-            'end' => 'required|date|after:start',
+            'start' => 'required|date',
+            'end' => 'nullable|date|after:start',
             'email' => 'required|email',
         ];
     }

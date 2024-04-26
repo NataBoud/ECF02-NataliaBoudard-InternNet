@@ -7,7 +7,7 @@
     <main class="mt-6">
 
         <div class="flex justify-center p-6">
-            <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
+            <div class="bg-white p-8 rounded-lg shadow-md w-full lg:w-1/2">
                 <form method="POST" action="{{ route('opportunities.store') }}" class="space-y-4">
                     @csrf
                     <div>
@@ -43,7 +43,7 @@
 
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mt-4">Email</label>
-                        <input id="email" type="email" name="email" class="mt-1 p-2 w-full border rounded-md" required>
+                        <input id="email" type="email" name="email" class="mt-1 p-2 w-full border rounded-md mb-6" required>
                     </div>
 
                     <div class="flex justify-end mt-6">

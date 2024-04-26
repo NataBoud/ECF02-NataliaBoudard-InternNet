@@ -1,3 +1,8 @@
+@php
+    use Illuminate\Support\Carbon
+@endphp
+
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -11,11 +16,11 @@
                 @if ($opportunity)
                     <h2 class="text-xl font-semibold">{{ $opportunity->title }}</h2>
                     <p class="text-gray-600">{{ $opportunity->typeContract }}</p>
-                    <p class="text-gray-600">Date début: {{ $opportunity->start }}</p>
+                    <p class="text-gray-600">Date début: {{ Carbon::parse($opportunity->start)->format('d/m/Y') }}</p>
 
                     {{-- Afficher la date de fin seulement si elle n'est pas null --}}
                     @if ($opportunity->end)
-                        <p class="text-gray-600">Date de fin: {{ $opportunity->end }}</p>
+                        <p class="text-gray-600">Date de fin: {{ Carbon::parse($opportunity->end)->format('d/m/Y') }}</p>
                     @endif
 
                     <p class="text-gray-600">Employeur: {{ $opportunity->user->name }}</p>

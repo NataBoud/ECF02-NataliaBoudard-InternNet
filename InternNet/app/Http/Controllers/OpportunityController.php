@@ -13,7 +13,7 @@ class OpportunityController extends Controller
 
     public function index(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $opportunities = Opportunity::all();
+        $opportunities = Opportunity::orderBy('created_at', 'desc')->get();
 //        dd($opportunities);
         return view('welcome', compact('opportunities'));
     }
@@ -25,26 +25,26 @@ class OpportunityController extends Controller
     }
 
     // CREATE
-    public function store(StoreOpportunityRequest $request)
+    public function store(StoreOpportunityRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validated();
-//        Opportunity::create([
-//            ...$validated,
-//            'user_id' => auth()->id(),
-//            'company_id' => auth()->user()->company->id,
-//        ]);
         $opportunity = new Opportunity([
             ...$validated,
             'user_id' => Auth::id(),
             'company_id' => Auth::user()->company->id,
-//            'company_id' => auth()->user()->company->id
         ]);
 
         $opportunity->save();
 
         return redirect()
-            ->route('opportunities.index')
+            ->route('opportunities.offers')
             ->with('success', 'Opportunité créée avec succès!');
+    }
+
+    public function showUserOffers(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $opportunities = Opportunity::where('user_id', auth()->id())->get();
+        return view('opportunity.offers', compact('opportunities'));
     }
 
 
