@@ -19,6 +19,8 @@
                     </x-nav-link>
 
                     @if (Route::has('login'))
+
+                        @auth
                         <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
 
                             {{ __('Voir le profile') }}
@@ -36,6 +38,7 @@
                                 {{ __('Mes offres') }}
 
                         </x-nav-link>
+                        @endauth
 
                         @guest
 {{--                        <x-nav-link :href="route('login')" :active="request()->routeIs('login')">--}}
