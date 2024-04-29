@@ -14,49 +14,79 @@
         <div class="flex justify-center p-6">
             <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
                 @if ($opportunity)
-                    <h2 class="text-xl font-semibold">{{ $opportunity->title }}</h2>
-                    <p class="text-gray-600">{{ $opportunity->typeContract }}</p>
-                    <p class="text-gray-600">Date début: {{ Carbon::parse($opportunity->start)->format('d/m/Y') }}</p>
+                    <h2 class="text-xl font-bold text-indigo-900 text-opacity-90 mb-1">
+                        {{ $opportunity->title }}
+                    </h2>
+                    <p class="uppercase text-sm mt-2 text-gray-800">
+                        {{ $opportunity->user->company->name }}
+                    </p>
+                    <p class="text-sm  text-gray-800 mb-4">
+                        {{ $opportunity->user->company->localisation }}
+                    </p>
+                    <span class="text-sm bg-gray-200 text-gray-700 p-1.5 rounded-md font-bold">
+                        {{ $opportunity->typeContract }}
+                    </span>
+                    <p class="text-sm text-gray-500 mt-4">
+                        Date début: {{ Carbon::parse($opportunity->start)->format('d/m/Y') }}
+                    </p>
 
                     {{-- Afficher la date de fin seulement si elle n'est pas null --}}
                     @if ($opportunity->end)
-                        <p class="text-gray-600">Date de fin: {{ Carbon::parse($opportunity->end)->format('d/m/Y') }}</p>
+                        <p class="text-sm text-gray-500">Date de fin: {{ Carbon::parse($opportunity->end)->format('d/m/Y') }}</p>
                     @endif
 
-                    <p class="text-gray-600">Employeur: {{ $opportunity->user->name }}</p>
-                    <p class="mt-4">{{ $opportunity->description }}</p>
-                    <span class="block mt-4 text-sm text-gray-400">Date de création: {{ $opportunity->created_at }}</span>
-                    <hr class="my-6">
+                    <p class="text-md text-gray-500 mt-2 mb-4">{{ $opportunity->description }}</p>
+                    <span class="text-sm text-gray-400">
+                        Offre publiée: {{ Carbon::parse($opportunity->created_at)->format('d/m/Y') }}
+                    </span>
                 @else
                     <p class="text-red-500">Article introuvable</p>
                 @endif
 
 
                 {{-- BUTTONS SUPPRIMER MODIFIER --}}
-                <div class="mt-6">
+                <div class="flex mt-6 justify-between">
                     @auth
                         @if ($opportunity->user_id == auth()->id())
-                            <a href="{{ route('opportunities.edit', $opportunity->id) }}" >
-                                <x-primary-button class="mt-3">
-                                    {{ __('Modifier') }}
-                                </x-primary-button>
-                            </a>
-                            <form action="{{ route('opportunities.destroy', $opportunity->id) }}" method="POST" >
-                                @csrf
-                                @method('DELETE')
-                                <x-danger-button class="mt-3">
-                                    {{ __('Supprimer') }}
-                                </x-danger-button>
-                            </form>
+                            <div>
+                                <x-nav-link :href="route('opportunities.offers')" :active="request()->routeIs('opportunities.offers')" class="mt-3 pt-2">
+
+                                    {{ __('Retour') }}
+
+                                </x-nav-link>
+                            </div>
+                            <div class="flex">
+                                <a href="{{ route('opportunities.edit', $opportunity->id) }}" >
+                                    <x-primary-button class="mt-3 mr-2">
+                                        {{ __('Modifier') }}
+                                    </x-primary-button>
+                                </a>
+                                <form action="{{ route('opportunities.destroy', $opportunity->id) }}" method="POST" >
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-danger-button class="mt-3">
+                                        {{ __('Supprimer') }}
+                                    </x-danger-button>
+                                </form>
+                            </div>
                         @endif
                     @endauth
-                        @guest
+                    @guest
+                        <div>
+                            <x-nav-link :href="route('opportunities.index')" :active="request()->routeIs('opportunities.index')" class="mt-3 pt-2">
+
+                                {{ __('Retour') }}
+
+                            </x-nav-link>
+                        </div>
+                        <div>
                             <a href="mailto:{{ $opportunity->user->email }}" target="_blank">
                                 <x-primary-button class="mt-3">
                                     {{ __('Postuler') }}
                                 </x-primary-button>
                             </a>
-                        @endguest
+                        </div>
+                    @endguest
                 </div>
             </div>
         </div>

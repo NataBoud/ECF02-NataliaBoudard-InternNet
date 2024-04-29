@@ -8,6 +8,9 @@ Route::get('/', function () {
     return redirect()->route('opportunities.index');
 })->name('welcome');
 
+Route::get('/search', [OpportunityController::class, 'search'])->name('search');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

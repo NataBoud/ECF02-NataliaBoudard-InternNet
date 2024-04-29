@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 /**
  * @method static find($id)
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Opportunity extends Model
 {
     use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'title',
@@ -27,10 +29,23 @@ class Opportunity extends Model
         'user_id'
     ];
 
-    public static function create(array $opportunityData)
+    /**
+     * @return array{id: int, title: mixed, typeContract: mixed}
+     */
+    public function toSearchableArray()
     {
+        return [
+            'id' => (int) $this->id,
+            'title' => $this->title,
+            'typeContract' => $this->typeContract,
+            'description' => $this->description,
+        ];
     }
 
+//    public static function create(array $opportunityData)
+//    {
+//        return parent::create($opportunityData);
+//    }
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

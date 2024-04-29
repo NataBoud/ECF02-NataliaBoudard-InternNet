@@ -14,8 +14,8 @@ class OpportunityController extends Controller
     public function index(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $opportunities = Opportunity::orderBy('created_at', 'desc')->get();
-//        dd($opportunities);
         return view('welcome', compact('opportunities'));
+
     }
 
 
@@ -45,6 +45,14 @@ class OpportunityController extends Controller
     {
         $opportunities = Opportunity::where('user_id', auth()->id())->get();
         return view('opportunity.offers', compact('opportunities'));
+    }
+
+    public function search(Request $request): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $query = $request->input('query');
+        $opportunities = Opportunity::search($query)->get();
+
+        return view('welcome', compact('opportunities'));
     }
 
 

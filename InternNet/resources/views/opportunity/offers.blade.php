@@ -13,9 +13,9 @@
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
             <a href="{{ route('opportunities.create') }}" >
-                <x-primary-button class="mb-6 ">
+                <x-secondary-button class="mb-6 ">
                     {{ __('Creer une offre') }}
-                </x-primary-button>
+                </x-secondary-button>
             </a>
 
             @session('success')

@@ -20,21 +20,21 @@
 
                     @if (Route::has('login'))
                         <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-                        @auth
+
                             {{ __('Voir le profile') }}
-                        @endauth
+
                         </x-nav-link>
 
                         <x-nav-link :href="route('opportunities.create')" :active="request()->routeIs('opportunities.create')">
-                        @auth
+
                             {{ __('Publier une offre') }}
-                        @endauth
+
                         </x-nav-link>
 
                         <x-nav-link :href="route('opportunities.offers')" :active="request()->routeIs('opportunities.offers')">
-                            @auth
+
                                 {{ __('Mes offres') }}
-                            @endauth
+
                         </x-nav-link>
 
                         @guest
