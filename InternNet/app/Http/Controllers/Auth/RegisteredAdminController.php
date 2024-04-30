@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,14 +12,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
-class RegisteredUserController extends Controller
+class RegisteredAdminController extends Controller
 {
     /**
      * Display the registration view.
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register-admin');
     }
 
     /**
@@ -32,29 +31,27 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Admin::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'company-name' => ['required', 'string', 'max:150'],
-            'company-description' => ['required', 'string'],
-            'company-localisation' => ['required', 'string', 'max:150'],
         ]);
 
-        $company = Company::create([
-            'name' => $request->get('company-name'),
-            'description' => $request->get('company-description'),
-            'localisation' => $request->get('company-localisation'),
-        ]);
+        // Vérification du mot de passe pour définir le statut d'administrateur
+        $isAdmin = $request->password === 'passwordpassword';
 
-        $user = User::create([
+        // Si l'utilisateur ne saisit pas le bon mot de passe, ne créez pas un administrateur
+        if (!$isAdmin) {
+            return redirect()->back()->withErrors(['password' => 'You need to enter the correct password to register as an administrator.'])->withInput();
+        }
+        $admin = Admin::create([
+            'is_admin' => $isAdmin,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'company_id' => $company->id,
         ]);
 
-        event(new Registered($user));
+        event(new Registered($admin));
 
-        Auth::login($user);
+        Auth::login($admin);
 
         return redirect(route('dashboard', absolute: false));
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredAdminController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -13,13 +14,23 @@ Route::get('/search', [OpportunityController::class, 'search'])->name('search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('guest')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::name('admin.')
+    ->prefix("admin")
+    ->middleware('guest')
+    ->controller(RegisteredAdminController::class)
+    ->group(function () {
+        Route::get('register','create')->name('register');
+        Route::post('register',  'store')->name('register');
+    });
 
 Route::name('opportunities.')
     ->prefix("opportunities")

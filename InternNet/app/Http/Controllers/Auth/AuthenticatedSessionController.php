@@ -28,7 +28,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('opportunities.offers', absolute: false));
+        // Vérifier si l'utilisateur authentifié est un administrateur
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            // Si c'est un administrateur, rediriger vers une route spécifique pour les administrateurs
+            return redirect()->intended(route('dashboard', absolute: false));
+        } else {
+            // Sinon, rediriger vers une route par défaut pour les utilisateurs normaux
+            return redirect()->intended(route('opportunities.offers', absolute: false));
+        }
     }
 
     /**
@@ -36,7 +43,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::logout();// Utilise le garde utilisé pour l'authentification (peut être 'web' ou 'admin')
 
         $request->session()->invalidate();
 

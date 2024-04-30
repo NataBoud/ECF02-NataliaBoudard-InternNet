@@ -27,6 +27,7 @@
 
                         </x-nav-link>
 
+
                         <x-nav-link :href="route('opportunities.create')" :active="request()->routeIs('opportunities.create')">
 
                             {{ __('Publier une offre') }}
@@ -38,7 +39,14 @@
                                 {{ __('Mes offres') }}
 
                         </x-nav-link>
+                        @if(Auth::check() && Auth::user() instanceof \App\Models\Admin)
+                            <p>ADMIN TEST</p>
+                        @endif
+
                         @endauth
+
+
+
 
                         @guest
 {{--                        <x-nav-link :href="route('login')" :active="request()->routeIs('login')">--}}
@@ -62,7 +70,6 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
-
                     <x-slot name="trigger">
                         @guest
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -84,13 +91,13 @@
                             </button>
                         @endguest
                     </x-slot>
-
+                    <!-- Dropdown Content -->
                     <x-slot name="content">
                         @guest
+                            <p>Employeur</p>
                             <x-dropdown-link :href="route('login')">
                                 {{ __('Log in') }}
                             </x-dropdown-link>
-
                             @if (Route::has('register'))
                                 <x-dropdown-link :href="route('register')">
                                     {{ __('Register') }}
@@ -100,21 +107,45 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
                                                  onclick="event.preventDefault();
-                                    this.closest('form').submit();">
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        @endguest
+                        @guest
+                            <p>Admin</p>
+                            <x-dropdown-link :href="route('login')">
+                                {{ __('Log in') }}
+                            </x-dropdown-link>
+                            @if (Route::has('admin.register'))
+                                <x-dropdown-link :href="route('admin.register')">
+                                    {{ __('Register') }}
+                                </x-dropdown-link>
+                            @endif
+                        @else
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown-link :href="route('logout')"
+                                                 onclick="event.preventDefault();
+                                                this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         @endguest
                     </x-slot>
-
                 </x-dropdown>
             </div>
+
+
 
 
             <!-- Hamburger -->
@@ -136,7 +167,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 @guest
-                    <div class="font-medium text-base text-gray-800">{{ __('Espace employeur') }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ __('Se connecter') }}</div>
                 @else
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
