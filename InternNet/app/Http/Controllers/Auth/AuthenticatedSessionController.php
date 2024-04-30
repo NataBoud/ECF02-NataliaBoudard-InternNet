@@ -28,14 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Vérifier si l'utilisateur authentifié est un administrateur
-        if (Auth::check() && Auth::user()->isAdmin()) {
-            // Si c'est un administrateur, rediriger vers une route spécifique pour les administrateurs
-            return redirect()->intended(route('dashboard', absolute: false));
-        } else {
-            // Sinon, rediriger vers une route par défaut pour les utilisateurs normaux
-            return redirect()->intended(route('opportunities.offers', absolute: false));
+        if($request->user()->usertype === 'admin') {
+            return redirect('admin/dashboard');
         }
+
+
+        return redirect()->intended(route('opportunities.offers'));
+
     }
 
     /**

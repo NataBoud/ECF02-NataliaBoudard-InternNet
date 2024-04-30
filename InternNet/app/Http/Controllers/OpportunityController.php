@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOpportunityRequest;
+use App\Http\Requests\StoreTypeContratRequest;
 use App\Models\Opportunity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -18,14 +18,13 @@ class OpportunityController extends Controller
 
     }
 
-
     public function create(): View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('opportunity.create');
     }
 
     // CREATE
-    public function store(StoreOpportunityRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreTypeContratRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validated();
         $opportunity = new Opportunity([

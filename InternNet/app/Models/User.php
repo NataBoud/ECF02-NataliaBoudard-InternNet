@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'company_id',
+        'usertype'
     ];
 
     /**
@@ -51,6 +52,11 @@ class User extends Authenticatable
     public function opportunities(): HasMany
     {
         return $this->hasMany(Opportunity::class);
+    }
+
+    public function typeContrats(): HasMany
+    {
+        return $this->hasMany(TypeContrat::class, 'user_id');
     }
 
     public function company(): BelongsTo

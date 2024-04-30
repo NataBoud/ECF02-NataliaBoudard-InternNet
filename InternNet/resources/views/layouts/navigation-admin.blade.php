@@ -14,52 +14,19 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')" class="text-indigo-900 text-xl font-black">
 
-                            {{ __('InternNet') }}
+                        {{ __('InternNet') }}
 
                     </x-nav-link>
 
                     @if (Route::has('login'))
 
                         @auth
-                        <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                            <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
 
-                            {{ __('Voir le profile') }}
+                                {{ __('Voir le profile') }}
 
-                        </x-nav-link>
-
-
-                        <x-nav-link :href="route('opportunities.create')" :active="request()->routeIs('opportunities.create')">
-
-                            {{ __('Publier une offre') }}
-
-                        </x-nav-link>
-
-                        <x-nav-link :href="route('opportunities.offers')" :active="request()->routeIs('opportunities.offers')">
-
-                                {{ __('Mes offres') }}
-
-                        </x-nav-link>
-{{--                        @if(Auth::check() && Auth::user() instanceof \App\Models\Admin)--}}
-{{--                            <p>ADMIN TEST</p>--}}
-{{--                        @endif--}}
-
+                            </x-nav-link>
                         @endauth
-
-
-
-
-                        @guest
-{{--                        <x-nav-link :href="route('login')" :active="request()->routeIs('login')">--}}
-{{--                            {{ __('Log in') }}--}}
-{{--                        </x-nav-link>--}}
-
-                        @if (Route::has('register'))
-{{--                            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">--}}
-{{--                                {{ __('Register') }}--}}
-{{--                            </x-nav-link>--}}
-                        @endif
-                        @endguest
-
                     @endif
                 </div>
 
@@ -116,36 +83,9 @@
                                 </x-dropdown-link>
                             </form>
                         @endguest
-{{--                        @guest--}}
-{{--                            <p>Admin</p>--}}
-{{--                            <x-dropdown-link :href="route('login')">--}}
-{{--                                {{ __('Log in') }}--}}
-{{--                            </x-dropdown-link>--}}
-{{--                            @if (Route::has('admin.register'))--}}
-{{--                                <x-dropdown-link :href="route('admin.register')">--}}
-{{--                                    {{ __('Register') }}--}}
-{{--                                </x-dropdown-link>--}}
-{{--                            @endif--}}
-{{--                        @else--}}
-{{--                            <x-dropdown-link :href="route('profile.edit')">--}}
-{{--                                {{ __('Profile') }}--}}
-{{--                            </x-dropdown-link>--}}
-{{--                            <!-- Authentication -->--}}
-{{--                            <form method="POST" action="{{ route('logout') }}">--}}
-{{--                                @csrf--}}
-{{--                                <x-dropdown-link :href="route('logout')"--}}
-{{--                                                 onclick="event.preventDefault();--}}
-{{--                                                this.closest('form').submit();">--}}
-{{--                                    {{ __('Log Out') }}--}}
-{{--                                </x-dropdown-link>--}}
-{{--                            </form>--}}
-{{--                        @endguest--}}
                     </x-slot>
                 </x-dropdown>
             </div>
-
-
-
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -204,3 +144,4 @@
     </div>
 
 </nav>
+

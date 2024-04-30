@@ -13,7 +13,10 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredAdminController extends Controller
+
 {
+
+
     /**
      * Display the registration view.
      */

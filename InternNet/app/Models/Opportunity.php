@@ -20,7 +20,7 @@ class Opportunity extends Model
 
     protected $fillable = [
         'title',
-        'typeContract',
+//        'typeContract',
         'start',
         'end',
         'email',
@@ -37,7 +37,7 @@ class Opportunity extends Model
         return [
             'id' => (int) $this->id,
             'title' => $this->title,
-            'typeContract' => $this->typeContract,
+//            'typeContract' => $this->typeContract,
             'description' => $this->description,
         ];
     }

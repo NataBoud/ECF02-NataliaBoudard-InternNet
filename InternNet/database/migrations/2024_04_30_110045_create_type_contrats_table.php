@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('opportunities', function (Blueprint $table) {
+        Schema::create('type_contrats', function (Blueprint $table) {
             $table->id();
             $table->string('title', 45);
-//            $table->string('typeContract', 45);
-            $table->timestamp('start');
-            $table->timestamp('end')->nullable();
-            $table->text('description');
             $table->timestamps();
             $table->foreignId('user_id')->constrained();
         });
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('opportunities');
+        Schema::dropIfExists('type_contrats');
     }
 };

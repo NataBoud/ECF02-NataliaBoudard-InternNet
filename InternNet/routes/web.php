@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisteredAdminController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TypeContratController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,7 +16,7 @@ Route::get('/search', [OpportunityController::class, 'search'])->name('search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware('guest')->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,14 +25,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::name('admin.')
-    ->prefix("admin")
-    ->middleware('guest')
-    ->controller(RegisteredAdminController::class)
-    ->group(function () {
-        Route::get('register','create')->name('register');
-        Route::post('register',  'store')->name('register');
-    });
+//Route::name('admin.')
+//    ->prefix("admin")
+//    ->middleware('guest')
+//    ->controller(RegisteredAdminController::class)
+//    ->group(function () {
+//        Route::get('register','create')->name('register');
+//        Route::post('register',  'store')->name('register');
+//    });
 
 Route::name('opportunities.')
     ->prefix("opportunities")
@@ -53,3 +55,20 @@ Route::name('opportunities.')
     });
 
 require __DIR__.'/auth.php';
+
+// Routes admin
+
+Route::get('admin/dashboard', [AdminController::class, 'index'])
+    ->name('admin-dashboard')
+    ->middleware(['auth', 'admin']);
+
+Route::name('admin.')
+    ->prefix("admin")
+    ->middleware(['auth', 'admin'])
+    ->controller(TypeContratController::class)
+    ->group(function () {
+        Route::get('/type-contrat', 'index')->name('index');
+        Route::get('type-contrat/create', 'create')->name('create');
+        Route::post('/type-contrat', 'store')->name('store');
+
+    });
